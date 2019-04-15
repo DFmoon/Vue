@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script type="text/javascript" src="vue.js"></script>
+</head>
+<body>
+	<div id="aa">
+		<input type="text" v-model="itemvalue" />
+		<button @click="submit">提交</button>
+		<br>
+		<ul>
+			<li v-for="(item,index) of list" @click="del(index)">{{item}}</li>
+		</ul>
+	</div>
+	
+	<script type="text/javascript">
+		new Vue({
+			el:"#aa",
+			data:{
+				itemvalue:"",
+				list:[],
+			},
+			methods:{
+				submit:function(){				//添加
+					this.list.push(this.itemvalue);
+					this.itemvalue="";
+				},
+				del:function(index){			//删除
+					this.list.splice(index,1);
+				}
+			}
+		})
+	</script>
+</body>
+</html>
+		

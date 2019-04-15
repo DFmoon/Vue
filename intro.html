@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script type="text/javascript" src="vue.js"></script>
+</head>
+<body>
+	<div id="aa">				<!--挂载点-->
+		<!--数据绑定-->
+		<div>					<!--挂载点中间的内容就是模板，也可以将其放在Vue的template属性中-->
+			hello {{msg}} 						<!--绑定方式一，直接双大括号调用-->
+		</div>
+		<div v-text="msg"></div>				<!--绑定方式二，设置v-text属性-->
+		<div v-html="msg"></div>				<!--绑定方式三，设置v-html属性，区别在于该属性会对内容进行HTML转译-->
+		<input type="text" v-model="msg" />		<!--绑定方式四，通过v-model进行数据双向绑定-->
+		<!--属性绑定-->
+		<div v-bind:title="msg">属性绑定</div>	<!--给div的title属性绑定值，此时“”中的是一个表达式-->
+		<div :title="msg">属性绑定</div>			<!--简化-->
+		<!--事件绑定-->
+		<div v-on:click="fn">点击我{{msg}}</div>	<!--事件绑定，修改msg的值-->
+		<div @click="fn">点击我{{msg}}</div>		<!--简化<--><br/>
+
+		<!--计算属性-->
+		<div>
+			<input type="text" v-model="firstName">+
+			<input type="text" v-model="lastName">=
+			{{fullName}} 						<!--fullName为计算属性-->
+		</div><br/>
+
+		<!--侦听器-->
+		<div>fullName变化了{{count}}次</div><br/>
+
+		<!--v-if & v-show-->
+		<div v-if="show1">hello</div>			<!--隐藏时移除了整个节点-->
+		<button @click="toggle1">显隐</button>
+		<div v-show="show2">hello</div>			<!--隐藏时设置了display：none-->
+		<button @click="toggle2">显隐</button><br/><br/>
+
+		<!--v-for--> 							<!--循环输出数据，key为主键-->
+		<li v-for="(item,index) of list" :key="index">{{item}}</li>	
+
+	</div>
+
+	<script type="text/javascript">
+		new Vue({									//Vue实例
+			el:"#aa",								//绑定要操作的元素
+			//template:"<div>hello {{msg}}</div>",	//放置挂载点中的内容，即模板，不能放置纯文本
+			data:{									////数据项，键值对的组合
+				msg:"world",
+				firstName:"qin",
+				lastName:"li",
+				count:0,
+				show1:true,
+				show2:true,
+				list:[1,2,3,4],
+			},
+			methods:{								//事件
+				fn:function(){this.msg="sdf";},
+				toggle1:function(){this.show1=!this.show1;},
+				toggle2:function(){this.show2=!this.show2;},
+
+			},
+			computed:{								//计算属性，若firstName/lastName没有变化，则从缓存值直接读取fullName
+				fullName:function(){return this.firstName+this.lastName;}
+			},
+			watch:{									//侦听器，侦听属性的变化
+				firstName:function(){this.count++;},
+				lastName:function(){this.count++;}
+			}
+		})
+	</script>
+</body>
+</html>
+		

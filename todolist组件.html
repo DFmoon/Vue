@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script type="text/javascript" src="vue.js"></script>
+</head>
+<body>
+	<div id="aa">
+		<input type="text" v-model="itemvalue" />
+		<button @click="submit">提交</button>
+		<br>
+		<ul>
+			<li-item v-for="(item,index) of list" :index="index" :item="item" @delete="fn"></li-item>
+		</ul>
+	</div>
+	
+	<script type="text/javascript">
+		//每一个组件都是Vue的实例，所以Vue项目是由多个Vue实例构成
+		Vue.component("li-item",{				//全局组件，li-item为标签名，可直接在外部调用
+			props:["item","index"],				//接收外部传入的参数
+			template:"<li @click='del'>{{item}}</li>",
+			methods:{
+				del:function(){
+					this.$emit("delete",this.index);		//向外发布delete事件，并传入index,在外界需@delete进行订阅处理
+				},
+			},
+		});
+		new Vue({		//一个Vue实例
+			el:"#aa",
+			data:{
+				itemvalue:"",
+				list:[],
+			},
+			methods:{
+				submit:function(){
+					this.list.push(this.itemvalue);
+					this.itemvalue="";
+				},
+				fn:function(index){
+					this.list.splice(index,1);
+				}
+			}
+		})
+	</script>
+</body>
+</html>
+		
